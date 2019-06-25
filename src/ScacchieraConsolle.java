@@ -1,8 +1,18 @@
+import java.util.ArrayList;
+
 /**
  * Implementazione della scacchiera per usarla sulla consolle
  */
 class ScacchieraConsolle {
-    final Scacchiera scacchiera = new Scacchiera();
+    final Scacchiera scacchiera;
+
+    public ScacchieraConsolle() {
+        scacchiera = new Scacchiera();
+    }
+
+    public ScacchieraConsolle(Scacchiera scacchiera) {
+        this.scacchiera = scacchiera;
+    }
 
     public Scacchiera getScacchiera() {
         return scacchiera;
@@ -39,6 +49,11 @@ class ScacchieraConsolle {
     public int getFreeSpaces() {
         return scacchiera.getNumberOfFreeSpaces();
     }
+
+    ArrayList<Scacchiera.Posizione> cercaPosizioneLiberaConDueOccupate(Scacchiera.Simboli simbolo){
+        return scacchiera.cercaPosizioneLiberaConDueOccupate(simbolo);
+    }
+
 
     public void mostraScacchiera() {
         String t="";

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Classe che rappresenta la scacchiera con gli anum types relativi
  */
@@ -131,6 +133,114 @@ public class Scacchiera {
             }
         }
         return counter;
+    }
+
+    ArrayList<Posizione> cercaPosizioneLiberaConDueOccupate(Simboli simbolo){
+        ArrayList<Posizione> posizioni = new ArrayList<>();
+
+        // Cerco uma linea con due simboli uguali e uno spazio libero
+        Scacchiera.Posizione posizioneTemp = null;
+        Scacchiera.Posizione posizioneAvversario = null;
+
+        // Ricerca diagonale 1
+        int numSimboloDiag1 = 0;
+        int numVuotiDiag1 = 0;
+        int posRigaDiag1=0;
+        int posColonnaDiag1=0;
+
+        // Ricerca diagonale 2
+        int numSimboloDiag2 = 0;
+        int numVuotiDiag2 = 0;
+        int posRigaDiag2=0;
+        int posColonnaDiag2=0;
+
+        for (int i = 0; i < 3; i++) {
+            int numSimbAltro = 0;
+
+            // Ricerca orizzontale
+            int numSimboloHoriz = 0;
+            int numVuotiHoriz = 0;
+            int posRigaHoriz=0;
+            int posColonnaHoriz=0;
+
+            // Ricerca verticale
+            int numSimboloVert = 0;
+            int numVuotiVert = 0;
+            int posRigaVert=0;
+            int posColonnaVert=0;
+
+
+            for (int j = 0; j < 3; j++) {
+                // Ricerca orizzontale
+                if (scacchiera[i][j] == simbolo) {
+                    numSimboloHoriz++;
+                } else if (scacchiera[i][j] == Scacchiera.Simboli.Vuoto) {
+                    numVuotiHoriz++;
+                    posRigaHoriz=i;      // Non importa se sovrascrivo in quanto genero una posizione libera solo se ce n'è una sola
+                    posColonnaHoriz=j;
+                } else {
+                    numSimbAltro++; // TODO: Eliminare
+                }
+
+                // Ricerca verticale
+                if (scacchiera[j][i] == simbolo) {
+                    numSimboloVert++;
+                } else if (scacchiera[j][i] == Scacchiera.Simboli.Vuoto) {
+                    numVuotiVert++;
+                    posRigaVert=j;      // Non importa se sovrascrivo in quanto genero una posizione libera solo se ce n'è una sola
+                    posColonnaVert=i;
+
+                } else {
+                    numSimbAltro++; // Todo eliminare
+                }
+
+
+            }
+            // Ricerca diagonale 1
+            if (scacchiera[i][i] == simbolo) {
+                numSimboloDiag1++;
+            } else if (scacchiera[i][i] == Scacchiera.Simboli.Vuoto) {
+                numVuotiDiag1++;
+                posRigaDiag1=i;      // Non importa se sovrascrivo in quanto genero una posizione libera solo se ce n'è una sola
+                posColonnaDiag1=i;
+
+            } else {
+                numSimbAltro++; // Todo eliminare
+            }
+
+            // Ricerca diagonale 2
+            if (scacchiera[2-i][i] == simbolo) {
+                numSimboloDiag2++;
+            } else if (scacchiera[2-i][i] == Scacchiera.Simboli.Vuoto) {
+                numVuotiDiag2++;
+                posRigaDiag2=2-i;      // Non importa se sovrascrivo in quanto genero una posizione libera solo se ce n'è una sola
+                posColonnaDiag2=i;
+
+            } else {
+                numSimbAltro++; // Todo eliminare
+            }
+
+
+            if (numVuotiHoriz == 1 && numSimboloHoriz == 2) {
+                //System.out.println("trovata linea vincente (H): " + posizioneTemp);
+                posizioni.add(new Posizione(posRigaHoriz,posColonnaHoriz));
+            }
+            if (numVuotiVert== 1 && numSimboloVert == 2) {
+                //System.out.println("trovata linea vincente (H): " + posizioneTemp);
+                posizioni.add(new Posizione(posRigaVert,posColonnaVert));
+            }
+        }
+
+        if (numVuotiDiag1 == 1 && numSimboloDiag1 == 2) {
+            //System.out.println("trovata linea vincente (H): " + posizioneTemp);
+            posizioni.add(new Posizione(posRigaDiag1,posColonnaDiag1));
+        }
+        if (numVuotiDiag2== 1 && numSimboloDiag2 == 2) {
+            //System.out.println("trovata linea vincente (H): " + posizioneTemp);
+            posizioni.add(new Posizione(posRigaDiag2,posColonnaDiag2));
+        }
+
+        return posizioni;
     }
 
     ///////////////////////// Enumerazioni //////////////////
