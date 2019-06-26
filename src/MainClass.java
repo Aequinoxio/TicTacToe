@@ -4,34 +4,34 @@ class MainClass {
     public static void main(String[] args) {
         MainClass mainClass = new MainClass();
 
-        //mainClass.multiPartite();
+        mainClass.multiPartite();
         //mainClass.playGameWithHuman1();
         //mainClass.playGameWithHuman2();
         //mainClass.playGameWithHuman3();
         //mainClass.playGameWithHuman4();
         //mainClass.playGamePcVSPc6();
-        Scacchiera s = new Scacchiera();
+//        Scacchiera s = new Scacchiera();
+////        mainClass.playGame(s,
+////                new ComputerPlayerPaper(Scacchiera.Simboli.Croce, s, true),
+////                new HumanPlayer(Scacchiera.Simboli.Cerchio, s, false)
+////        );
+////        s = new Scacchiera();
+////        mainClass.playGame(s,
+////                new HumanPlayer(Scacchiera.Simboli.Cerchio, s, true),
+////                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false)
+////        );
+////        s = new Scacchiera();
 //        mainClass.playGame(s,
-//                new ComputerPlayerPaper(Scacchiera.Simboli.Croce, s, true),
-//                new HumanPlayer(Scacchiera.Simboli.Cerchio, s, false)
+//                new ComputerPlayerPaper(Scacchiera.Simboli.Cerchio, s, true),
+//                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false),
+//                false
 //        );
 //        s = new Scacchiera();
 //        mainClass.playGame(s,
-//                new HumanPlayer(Scacchiera.Simboli.Cerchio, s, true),
-//                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false)
+//                new ComputerPlayerSemiRandom(Scacchiera.Simboli.Cerchio, s, true),
+//                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false),
+//                false
 //        );
-//        s = new Scacchiera();
-        mainClass.playGame(s,
-                new ComputerPlayerPaper(Scacchiera.Simboli.Cerchio, s, true),
-                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false),
-                false
-        );
-        s = new Scacchiera();
-        mainClass.playGame(s,
-                new ComputerPlayerSemiRandom(Scacchiera.Simboli.Cerchio, s, true),
-                new ComputerPlayerSecondToMove(Scacchiera.Simboli.Croce, s, false),
-                false
-        );
     }
 
     /**
@@ -48,7 +48,7 @@ class MainClass {
 
         for (int i = 0; i < MAXPARTITE; i++) {
 
-            vincitore = playGamePcVSPc6();
+            vincitore = playGamePcVSPc7();
 
             switch (vincitore) {
                 case Croce:
@@ -612,6 +612,101 @@ class MainClass {
             }
 
             exitCondition = !movePC(s, player2, false);
+            //if (s.getFreeSpaces() == 0 || s.whatWinner() != null) {
+            if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+                exitCondition = true;
+            }
+
+        }
+
+        Scacchiera.Vincitori vincitore = Scacchiera.Vincitori.Patta;
+
+        if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+            System.out.println("Vincitore: " + s.whatWinner());
+            vincitore = s.whatWinner();
+        } else {
+            if (squalificato == null) {
+                System.out.println("Nessun vincitore");
+            } else {
+                System.out.println("Squalificato: " + squalificato);
+            }
+
+        }
+
+        return (vincitore);
+    }
+
+    /**
+     * Paper Player contro Secndmove. Inizia secondmove (iniziano a parti invertite: paper è fatto per iniziare per primo l'altro per secondo)
+     *
+     * @return simbolo del vincitore; simbolo vuoto se è patta
+     */
+    private Scacchiera.Vincitori playGamePcVSPc7() {
+
+        ComputerPlayerSecondToMove player1;
+        ComputerPlayerPaper player2;
+        ScacchieraConsolle s = new ScacchieraConsolle();
+
+        player1 = new ComputerPlayerSecondToMove(Scacchiera.Simboli.Cerchio, s.getScacchiera(), true);
+        player2 = new ComputerPlayerPaper(Scacchiera.Simboli.Croce, s.getScacchiera(), false);
+
+        System.out.println("Gioca  : player 1 " + player1 +
+                "\ncontro : player 2 " + player2);
+        System.out.println("Inizia: " + player1.getMioSimbolo());
+
+        s.mostraScacchiera();
+        return giocaTraPC(s.getScacchiera(),player1,player2,true);
+//        while (!exitCondition) {
+//            exitCondition = !movePC(s, player1, false);
+//            //if (s.getFreeSpaces() == 0 || s.whatWinner() != null) {
+//            if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+//                exitCondition = true;
+//                continue;
+//            }
+//            if (exitCondition) {
+//                continue;
+//            }
+//
+//            exitCondition = !movePC(s, player2, false);
+//            //if (s.getFreeSpaces() == 0 || s.whatWinner() != null) {
+//            if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+//                exitCondition = true;
+//            }
+//
+//        }
+//
+//        Scacchiera.Vincitori vincitore = Scacchiera.Vincitori.Patta;
+//
+//        if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+//            System.out.println("Vincitore: " + s.whatWinner());
+//            vincitore = s.whatWinner();
+//        } else {
+//            if (squalificato == null) {
+//                System.out.println("Nessun vincitore");
+//            } else {
+//                System.out.println("Squalificato: " + squalificato);
+//            }
+//
+//        }
+//
+//        return (vincitore);
+    }
+
+    private Scacchiera.Vincitori giocaTraPC(Scacchiera scacchiera, Player player1 , Player player2,boolean mostraScacchiera){
+        boolean exitCondition = false;
+        ScacchieraConsolle s = new ScacchieraConsolle(scacchiera);
+        while (!exitCondition) {
+            exitCondition = !movePC(s, player1, mostraScacchiera);
+            //if (s.getFreeSpaces() == 0 || s.whatWinner() != null) {
+            if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
+                exitCondition = true;
+                continue;
+            }
+            if (exitCondition) {
+                continue;
+            }
+
+            exitCondition = !movePC(s, player2, mostraScacchiera);
             //if (s.getFreeSpaces() == 0 || s.whatWinner() != null) {
             if (s.whatWinner() != Scacchiera.Vincitori.NonDecidibile) {
                 exitCondition = true;

@@ -57,33 +57,33 @@ public class Scacchiera {
     }
 
     Vincitori whatIsTheWinner(){
-        int playerCroceCount=0;
-        int playerCerchioCount=0;
+        int playerCroceCountDiag1=0;
+        int playerCerchioCountDiag1=0;
 
         // Check diagonali
-        int playerCroceCountdiag2=0;
-        int playerCerchioCountdiag2 = 0;
+        int playerCroceCountDiag2=0;
+        int playerCerchioCountDiag2 = 0;
         for (int i=0;i<3;i++){
             if (getSimbol(i,i)==Simboli.Cerchio){
-                playerCerchioCount++;
+                playerCerchioCountDiag1++;
             }
             if (getSimbol(i,i)==Simboli.Croce){
-                playerCroceCount++;
+                playerCroceCountDiag1++;
             }
 
-            if (getSimbol(i,2-i)==Simboli.Cerchio){
-                playerCerchioCountdiag2++;
+            if (getSimbol(2-i,i)==Simboli.Cerchio){
+                playerCerchioCountDiag2++;
             }
-            if (getSimbol(i,2-i)==Simboli.Croce){
-                playerCroceCountdiag2++;
+            if (getSimbol(2-i,i)==Simboli.Croce){
+                playerCroceCountDiag2++;
             }
 
 
         }
-        if (playerCerchioCount==3 || playerCerchioCountdiag2==3){
+        if (playerCerchioCountDiag1==3 || playerCerchioCountDiag2==3){
             return Vincitori.Cerchio;
         }
-        if (playerCroceCount==3 || playerCroceCountdiag2==3){
+        if (playerCroceCountDiag1==3 || playerCroceCountDiag2==3){
             return Vincitori.Croce;
         }
 
